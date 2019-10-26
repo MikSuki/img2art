@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="js/lib/stackblur.js"></script>
+    <script type="text/javascript" src="js/var.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/file.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/div.css">
+    <link rel="stylesheet" type="text/css" href="css/slider.css">
+</head>
+
+<body>
+    <input type="file" id="input_file" multiple="false" onchange="handleFiles(this.files)">
+    <div class="slidecontainer">
+        <p id="slider_v1_text">x-ratio: 1</p>
+        <input type="range" min="1" max="10" value="1" step="1" class="slider" id="slider_v1" oninput="app.elem.chgPText(1)">
+        <p id="slider_v2_text">y-ratio: 2</p>
+        <input type="range" min="1" max="10" value="2" step="1" class="slider" id="slider_v2" oninput="app.elem.chgPText(2)">
+        <p id="slider_v3_text">min value: 78</p>
+        <input type="range" min="0" max="255" value="78" class="slider" id="slider_v3" oninput="app.elem.chgPText(3)">
+        <p id="slider_v4_text">max value: 125</p>
+        <input type="range" min="0" max="255" value="125" class="slider" id="slider_v4" oninput="app.elem.chgPText(4)">
+        <p id="slider_v5_text">image scale: 0.5</p>
+        <input type="range" min="1" max="100" value="50" class="slider" id="slider_v5" oninput="app.elem.chgPText(5)">
+        <br><br>
+        <button id="change_btn" onclick="app.restart()">change</button>
+        <button id="resst_btn" onclick="app.reset()">reset</button>
+    </div>
+    <br>
+    <canvas id='cns1'></canvas>
+    <canvas id='cns2'></canvas>
+    <div id='div_art'></div>
+</body>
+
+</html>
