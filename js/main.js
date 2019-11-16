@@ -2,7 +2,7 @@ class Elem {
     constructor() {
         var cns = [],
             ctx = []
-        for (let i = 0; i < 2; ++i) {
+        for (let i = 0; i < 3; ++i) {
             cns.push(document.getElementById('cns' + (i + 1).toString()))
             ctx.push(cns[i].getContext('2d'))
         }
@@ -12,34 +12,78 @@ class Elem {
     // ---------------
     // canvas func
     // ---------------
-    getCnsWidth() {
-        return this.cns[0].width
+    getCnsWidth(index) {
+        return this.cns[index - 1].width
     }
 
-    getCnsHeight() {
-        return this.cns[0].height
+    getCnsHeight(index) {
+        return this.cns[index - 1].height
     }
 
-    setCns(w, h) {
+    setCns(index, w, h) {
         var scale = this.callConfig().img_scale
-        for (let i = 0; i < 2; ++i) {
-            this.cns[i].width = w * scale
-            this.cns[i].height = h * scale
-        }
+        this.cns[index - 1].width = w * scale
+        this.cns[index - 1].height = h * scale
+    }
+
+    getCns(index) {
+        return this.cns[index - 1]
     }
 
     getCtx(index) {
         return this.ctx[index - 1]
     }
 
-    rendImg(index, img) {
+
+    // --------------
+    // draw func
+    // --------------
+    clearCns(index) {
+        this.ctx[index - 1].clearRect(0, 0, this.cns[index - 1].width, this.cns[index - 1].height)
+    }
+    rendImg(index, img, w, h, need_resize) {
         var scale = this.callConfig().img_scale
-        this.ctx[index - 1].drawImage(img, 0, 0, img.width * scale, img.height * scale)
+        if (need_resize) this.setCns(index, w, h)
+        this.clearCns(index)
+        this.ctx[index - 1].drawImage(img, 0, 0, w * scale, h * scale)
     }
 
     rendImgData(index, imgData) {
         this.ctx[index - 1].putImageData(imgData, 0, 0)
     }
+
+    resizeAndDrawCns() {
+        var w = img.width,
+            h = img.height,
+            l_cns_i = 1, cns_i = 1, cnt = 1;
+        do {
+            if (cnt == 1) this.rendImg(cns_i, img, w, h, true) // first
+            else this.rendImg(cns_i, this.cns[l_cns_i - 1], w, h, true)
+            l_cns_i = cns_i
+            cns_i = (cns_i == 1) ? 2 : 1;
+            if (cnt++ > 1) {
+                w /= 2
+                h /= 2
+            }
+        } while (w > window.innerWidth || h > window.innerHeight);
+
+        if (l_cns_i == 1) {
+            this.rendImg(2, this.cns[0], w, h, true)
+            this.rendImg(1, this.cns[1], w, h, true)
+        }
+        else {
+            this.rendImg(1, this.cns[1], w, h, true)
+            this.rendImg(2, this.cns[0], w, h, true)
+        }
+        this.clearCns(2)
+        this.rendImg(3, this.cns[0], 1, 1, true)
+
+        return {
+            w: w,
+            h: h
+        }
+    }
+
     // ---------------
     // slider func
     // ---------------
@@ -103,7 +147,7 @@ class App {
             .bind(this.config)
         this.config.callElem = function () { return this }
             .bind(this.elem)
-        this.init()        
+        this.init()
     }
 
     init() {
@@ -111,14 +155,21 @@ class App {
     }
 
     start() {
-        var imgData1, imgData2;
+        // resize & draw img to canvas1
+        //app.elem.resizeAndDrawCns();
+        this.elem.rendImg(1, img, img.width, img.height, true) 
+    }
 
-        this.elem.setCns(img.width, img.width)
-        this.elem.rendImg(1, img)
-        imgData1 = this.elem.getCtx(1).getImageData(0, 0, this.elem.getCnsWidth(), this.elem.getCnsHeight());
-        imgData2 = this.elem.getCtx(1).getImageData(0, 0, this.elem.getCnsWidth(), this.elem.getCnsHeight());
+    edgeDetect() {
+        var w = this.elem.getCnsWidth(1),
+            h = this.elem.getCnsHeight(1),
+            imgData1, imgData2;
+
+        imgData1 = this.elem.getCtx(2).getImageData(0, 0, w, h);
+        imgData2 = this.elem.getCtx(2).getImageData(0, 0, w, h);
+        this.elem.rendImg(3, this.elem.getCns(2), w, h, true)
         // Gaussian blur
-        StackBlur.imageDataRGBA(imgData2, 0, 0, this.elem.getCnsWidth(), this.elem.getCnsHeight(), 8);
+        StackBlur.imageDataRGBA(imgData2, 0, 0, w, h, 8);
         // invert pic2
         invert(imgData2)
         // blend img1 & img2
@@ -127,7 +178,7 @@ class App {
         adjustLevel(imgData1)
         // convert art pic
         this.toArt(imgData1)
-        this.elem.rendImgData(2, imgData1)
+        this.elem.rendImgData(3, imgData1)
     }
 
     restart() {
@@ -142,8 +193,8 @@ class App {
 
     toArt(imgData) {
         var div_art = document.getElementById('div_art'),
-            w = this.elem.getCnsWidth(),
-            h = this.elem.getCnsHeight(),
+            w = this.elem.getCnsWidth(3),
+            h = this.elem.getCnsHeight(3),
             x_ratio = ~~this.config.x_ratio,
             y_ratio = ~~this.config.y_ratio;
 
@@ -195,8 +246,9 @@ window.onload = () => {
     img.onload = function () {
         if (is_first) {
             app = new App()
+            setSelArea()
             is_first = false
         }
-        setTimeout(() => app.start(), 0)
+        app.start()
     }
 }
