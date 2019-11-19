@@ -21,9 +21,9 @@ class Elem {
     }
 
     setCns(index, w, h) {
-        var scale = this.callConfig().img_scale
-        this.cns[index - 1].width = w * scale
-        this.cns[index - 1].height = h * scale
+        //var scale = this.callConfig().img_scale
+        this.cns[index - 1].width = w //* scale
+        this.cns[index - 1].height = h //* scale
     }
 
     getCns(index) {
@@ -42,10 +42,9 @@ class Elem {
         this.ctx[index - 1].clearRect(0, 0, this.cns[index - 1].width, this.cns[index - 1].height)
     }
     rendImg(index, img, w, h, need_resize) {
-        var scale = this.callConfig().img_scale
         if (need_resize) this.setCns(index, w, h)
         this.clearCns(index)
-        this.ctx[index - 1].drawImage(img, 0, 0, w * scale, h * scale)
+        this.ctx[index - 1].drawImage(img, 0, 0, w, h)
     }
 
     rendImgData(index, imgData) {
@@ -53,7 +52,8 @@ class Elem {
     }
 
     resizeAndDrawCns() {
-        var w = img.width,
+        var scale = this.callConfig().img_scale,
+            w = img.width,
             h = img.height,
             l_cns_i = 1, cns_i = 1, cnt = 1;
         do {
@@ -61,11 +61,11 @@ class Elem {
             else this.rendImg(cns_i, this.cns[l_cns_i - 1], w, h, true)
             l_cns_i = cns_i
             cns_i = (cns_i == 1) ? 2 : 1;
-            if (cnt++ > 1) {
+            if (cnt++ >= 1) {
                 w /= 2
                 h /= 2
             }
-        } while (w > window.innerWidth || h > window.innerHeight);
+        } while (cnt <= scale/*w > window.innerWidth || h > window.innerHeight*/);
 
         if (l_cns_i == 1) {
             this.rendImg(2, this.cns[0], w, h, true)
@@ -89,7 +89,15 @@ class Elem {
     // ---------------
     chgPText(i) {
         var v = document.getElementById(slider_id + i).value
-        v = i == 5 ? v / 100 : v
+        if (i == 5) {
+            switch (v) {
+                case '1': v = 1; break;
+                case '2': v = 0.5; break;
+                case '3': v = 0.25; break;
+                case '4': v = 0.125; break;
+                case '5': v = 0.0625; break;
+            }
+        }
         document.getElementById(slider_id + i + '_text').innerHTML = slider_p_text[i - 1] + v
     }
 
@@ -105,7 +113,7 @@ class Elem {
         for (let i = 0; i < 5; ++i) {
             let v = vals[i]
             document.getElementById(slider_id + (i + 1) + '_text').innerHTML = slider_p_text[i] + v
-            document.getElementById(slider_id + (i + 1)).value = i == 4 ? v * 100 : v
+            document.getElementById(slider_id + (i + 1)).value = v
         }
     }
 
@@ -121,7 +129,7 @@ class Config {
         this.y_ratio = document.getElementById(slider_id + 2).value
         this.min_val = document.getElementById(slider_id + 3).value
         this.max_val = document.getElementById(slider_id + 4).value
-        this.img_scale = document.getElementById(slider_id + 5).value / 100
+        this.img_scale = document.getElementById(slider_id + 5).value
     }
 
     reset() {
@@ -156,20 +164,21 @@ class App {
 
     start() {
         // resize & draw img to canvas1
-        //app.elem.resizeAndDrawCns();
-        this.elem.rendImg(1, img, img.width, img.height, true) 
+        app.elem.resizeAndDrawCns();
+        //this.elem.rendImg(1, img, img.width, img.height, true)
     }
 
     edgeDetect() {
-        var w = this.elem.getCnsWidth(1),
-            h = this.elem.getCnsHeight(1),
+        var w = this.elem.getCnsWidth(2),
+            h = this.elem.getCnsHeight(2),
             imgData1, imgData2;
 
         imgData1 = this.elem.getCtx(2).getImageData(0, 0, w, h);
         imgData2 = this.elem.getCtx(2).getImageData(0, 0, w, h);
         this.elem.rendImg(3, this.elem.getCns(2), w, h, true)
+
         // Gaussian blur
-        StackBlur.imageDataRGBA(imgData2, 0, 0, w, h, 8);
+        StackBlur.imageDataRGBA(imgData2, 0, 0, w, h, 10);
         // invert pic2
         invert(imgData2)
         // blend img1 & img2
@@ -183,12 +192,18 @@ class App {
 
     restart() {
         this.config.set()
-        setTimeout(() => this.start(), 0)
+        setTimeout(() => {
+            this.start()
+            this.edgeDetect()
+        }, 0)
     }
 
     reset() {
         this.config.reset()
-        setTimeout(() => this.start(), 0)
+        setTimeout(() => {
+            this.start()
+            this.edgeDetect()
+        }, 0)
     }
 
     toArt(imgData) {
@@ -242,13 +257,15 @@ class App {
 
 
 window.onload = () => {
-    img.crossOrigin = '';
+    img.crossOrigin = 'Anonymous';
     img.onload = function () {
         if (is_first) {
             app = new App()
             setSelArea()
             is_first = false
         }
+        document.getElementById('step2btn').click()
         app.start()
     }
+    setPagin()
 }

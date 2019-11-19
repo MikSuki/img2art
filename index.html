@@ -2,41 +2,65 @@
 <html>
 
 <head>
+    <title>IMG to Art</title>
     <script src="js/lib/stackblur.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/var.js"></script>
     <script type="text/javascript" src="js/util.js"></script>
     <script type="text/javascript" src="js/file.js"></script>
+    <script type="text/javascript" src="js/pagination.js"></script>
     <script type="text/javascript" src="js/selArea.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <link rel="stylesheet" type="text/css" href="css/body.css">
     <link rel="stylesheet" type="text/css" href="css/div.css">
     <link rel="stylesheet" type="text/css" href="css/slider.css">
+    <link rel="stylesheet" type="text/css" href="css/pagination.css">
+    <link rel="stylesheet" type="text/css" href="css/button.css">
     <link rel="stylesheet" type="text/css" href="css/sel_area.css">
 </head>
 
 <body>
-    <input type="file" id="input_file" multiple="false" onchange="handleFiles(this.files)">
-    <div class="slidecontainer">
-        <p id="slider_v1_text">x-ratio: 1</p>
-        <input type="range" min="1" max="10" value="1" step="1" class="slider" id="slider_v1" oninput="app.elem.chgPText(1)">
-        <p id="slider_v2_text">y-ratio: 2</p>
-        <input type="range" min="1" max="10" value="2" step="1" class="slider" id="slider_v2" oninput="app.elem.chgPText(2)">
-        <p id="slider_v3_text">min value: 78</p>
-        <input type="range" min="0" max="255" value="78" class="slider" id="slider_v3" oninput="app.elem.chgPText(3)">
-        <p id="slider_v4_text">max value: 125</p>
-        <input type="range" min="0" max="255" value="125" class="slider" id="slider_v4" oninput="app.elem.chgPText(4)">
-        <p id="slider_v5_text">image scale: 0.5</p>
-        <input type="range" min="1" max="100" value="50" class="slider" id="slider_v5" oninput="app.elem.chgPText(5)">
-        <br><br>
-        <button id="change_btn" onclick="app.restart()">change</button>
-        <button id="resst_btn" onclick="app.reset()">reset</button>
+    <br><br>
+    <div id="page">
+        <div class="button active" onclick="chgPage(1)"></div>
+        <div class="button" onclick="chgPage(2)" id='step2btn'></div>
     </div>
-    <br>
-    <canvas id='cns1'></canvas>
-    <canvas id='cns2'></canvas>
-    <canvas id='cns3'></canvas>
-    <div id='div_art'></div>
-    <div id="sel_area" hidden></div>
+    <br><br>
+    <div id='page1'>
+        <h2 style='font-size: 4em; text-align: center;'>1. upload an image file</h2>
+        <input type="file" id="input_file" multiple="false" onchange="handleFiles(this.files)">
+        <br><br>
+        <input type="url" placeholder="https://example.com" id="input_file_url">
+        <input type="submit" onclick=handleUrl()>
+    </div>
+    <div id='page2' style='display: none;'>
+        <h2 style='font-size: 4em; text-align: center;'>2. clip image you like</h2>
+        <div class="slidecontainer" style='font-size: 2em;'>
+            <p id="slider_v1_text">x-ratio: 1</p>
+            <input type="range" min="1" max="10" value="1" step="1" class="slider" id="slider_v1"
+                oninput="app.elem.chgPText(1)">
+            <p id="slider_v2_text">y-ratio: 2</p>
+            <input type="range" min="1" max="10" value="2" step="1" class="slider" id="slider_v2"
+                oninput="app.elem.chgPText(2)">
+            <p id="slider_v3_text">min value: 78</p>
+            <input type="range" min="0" max="255" value="78" class="slider" id="slider_v3"
+                oninput="app.elem.chgPText(3)">
+            <p id="slider_v4_text">max value: 125</p>
+            <input type="range" min="0" max="255" value="125" class="slider" id="slider_v4"
+                oninput="app.elem.chgPText(4)">
+            <p id="slider_v5_text">image scale: 1</p>
+            <input type="range" min="1" max="5" value="1" class="slider" id="slider_v5" oninput="app.elem.chgPText(5)">
+            <br><br>
+            <button class="button2" id="change_btn" onclick="app.restart()">change</button>
+            <button class="button2" id="resst_btn" onclick="app.reset()">reset</button>
+        </div>
+        <br>
+        <canvas id='cns1'></canvas>
+        <canvas id='cns2'></canvas>
+        <canvas id='cns3'></canvas>
+        <div id='div_art'></div>
+        <div id="sel_area" hidden></div>
+    </div>
 </body>
 
 </html>

@@ -16,8 +16,7 @@ function setSelArea() {
         var rect = app.elem.cns[0].getBoundingClientRect();
         x1 = e.clientX
         y1 = e.clientY
-        
-        if (!(x1 >= rect.left && x1 <= rect.right && y1 >= rect.top && y1 <= rect.bottom)) 
+        if (!(x1 >= rect.left && x1 <= rect.right && y1 >= rect.top && y1 <= rect.bottom))
             return
         x1 = e.clientX + window.scrollX;
         y1 = e.clientY + window.scrollY;
@@ -43,5 +42,25 @@ function setSelArea() {
         app.elem.ctx[1].clearRect(0, 0, app.elem.getCnsWidth(2), app.elem.getCnsHeight(2))
         app.elem.ctx[1].drawImage(app.elem.cns[0], x3, y3, x4 - x3, y4 - y3, 0, 0, x4 - x3, y4 - y3)
         app.edgeDetect()
-    }; 
+    };
+
+
+    document.body.addEventListener('touchstart', function (e) {
+        triggerMouseEvent(this, "mousedown");
+    }
+        , true);
+    document.body.addEventListener('touchmove', function (e) {
+        triggerMouseEvent(this, "mousemove");
+    }
+        , true);
+    document.body.addEventListener('touchend', function () {
+        triggerMouseEvent(this, "mouseup");
+    }
+        , true);
+
+    function triggerMouseEvent(node, eventType) {
+        var clickEvent = document.createEvent('MouseEvents');
+        clickEvent.initEvent(eventType, true, true);
+        node.dispatchEvent(clickEvent);
+    }
 }
