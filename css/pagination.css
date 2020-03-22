@@ -1,15 +1,17 @@
-#page
-{
+#page {
+    position: -webkit-sticky;
+    position: sticky;
+    /* width: 15%; */
     width: 180px;
     height: 20px;
     margin: 0 auto;
     transform: translateY(-50%);
     overflow: hidden;
-    z-index:1;
+    z-index: 1;
+    top: 20px;
 }
 
-.button
-{
+.button {
     width: 20px;
     height: 20px;
     float: left;
@@ -20,13 +22,11 @@
     transition: 0.3s ease width;
 }
 
-.button:last-child
-{
+.button:last-child {
     margin-right: 0;
 }
 
-.button.active
-{
+.button.active {
     width: 60px;
     cursor: auto;
 }

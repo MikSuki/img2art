@@ -110,7 +110,7 @@ class Elem {
             DEFAULT_VALUE.img_scale
         ]
 
-        for (let i = 0; i < 5; ++i) {
+        for (let i = 2; i < 5; ++i) {
             let v = vals[i]
             document.getElementById(slider_id + (i + 1) + '_text').innerHTML = slider_p_text[i] + v
             document.getElementById(slider_id + (i + 1)).value = v
@@ -125,8 +125,8 @@ class Config {
     constructor() { }
 
     set() {
-        this.x_ratio = document.getElementById(slider_id + 1).value
-        this.y_ratio = document.getElementById(slider_id + 2).value
+        // this.x_ratio = document.getElementById(slider_id + 1).value
+        // this.y_ratio = document.getElementById(slider_id + 2).value
         this.min_val = document.getElementById(slider_id + 3).value
         this.max_val = document.getElementById(slider_id + 4).value
         this.img_scale = document.getElementById(slider_id + 5).value
@@ -191,6 +191,7 @@ class App {
     }
 
     restart() {
+        document.getElementById('sel_area').hidden = true;
         this.config.set()
         setTimeout(() => {
             this.start()
@@ -199,6 +200,7 @@ class App {
     }
 
     reset() {
+        document.getElementById('sel_area').hidden = true;
         this.config.reset()
         setTimeout(() => {
             this.start()
@@ -266,6 +268,13 @@ window.onload = () => {
         }
         document.getElementById('step2btn').click()
         app.start()
+        let top = window.scrollY +
+            document.getElementById('page2').getBoundingClientRect().y;
+        window.scroll({
+            top: top,
+            left: 0,
+            behavior: 'smooth'
+        });
     }
     setPagin()
 }

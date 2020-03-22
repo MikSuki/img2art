@@ -1,4 +1,6 @@
 body {
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
     height: 100%;
     -webkit-user-select: none;/* Chrome all / Safari all */
     -moz-user-select: none;/* Firefox all */

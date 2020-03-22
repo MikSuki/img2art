@@ -18,16 +18,16 @@ function setPagin() {
 function chgPage(i) {
     switch (i) {
         case 1:
-            document.getElementById('page1').style.display = 'block'
-            document.getElementById('page2').style.display = 'none'
+            // document.getElementById('page1').style.display = 'block'
+            // document.getElementById('page2').style.display = 'none'
             break
         case 2:
             if (is_first) {
                 alert('upload an image')
                 return
             }
-            document.getElementById('page1').style.display = 'none'
-            document.getElementById('page2').style.display = 'block'
+            // document.getElementById('page1').style.display = 'none'
+            // document.getElementById('page2').style.display = 'block'
             break
     }
 }
