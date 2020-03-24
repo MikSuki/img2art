@@ -42,14 +42,6 @@ function setSelArea() {
         app.elem.ctx[1].clearRect(0, 0, app.elem.getCnsWidth(2), app.elem.getCnsHeight(2))
         app.elem.ctx[1].drawImage(app.elem.cns[0], x3, y3, x4 - x3, y4 - y3, 0, 0, x4 - x3, y4 - y3)
         app.edgeDetect()
-        let top = window.scrollY +
-            app.elem.cns[1].getBoundingClientRect().y + 
-            app.elem.cns[1].getBoundingClientRect().height;
-        window.scroll({
-            top: top,
-            left: 0,
-            behavior: 'smooth'
-        });
     };
 
 

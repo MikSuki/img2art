@@ -12,9 +12,14 @@ function handleFiles(files) {
     }
 }
 
-function handleUrl(){
-    var url = document.getElementById('input_file_url').value
-    img.src = url
-    document.getElementById('input_file_url').value = ''
-    console.log(url)
+function handleUrl() {
+    let url = document.getElementById(ID.url).value;
+    img.src = url;
+    document.getElementById(ID.url).onkeydown = function(){
+        this.style.color = 'black';
+    }
+}
+
+function useEample() {
+    img.src = 'example.jpg';
 }

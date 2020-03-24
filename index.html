@@ -1,73 +1,63 @@
 <!doctype html>
-<html style="height: 100%;">
-    <head>
-        <title>IMG to Art</title>
-        <script src="js/lib/stackblur.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script type="text/javascript" src="js/var.js"></script>
-        <script type="text/javascript" src="js/util.js"></script>
-        <script type="text/javascript" src="js/file.js"></script>
-        <script type="text/javascript" src="js/pagination.js"></script>
-        <script type="text/javascript" src="js/selArea.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
-        <link rel="stylesheet" type="text/css" href="css/body.css">
-        <link rel="stylesheet" type="text/css" href="css/div.css">
-        <link rel="stylesheet" type="text/css" href="css/slider.css">
-        <link rel="stylesheet" type="text/css" href="css/pagination.css">
-        <link rel="stylesheet" type="text/css" href="css/button.css">
-        <link rel="stylesheet" type="text/css" href="css/sel_area.css">
-    </head>
+<html>
 
-    <body style="height: 100%;">
+<head>
+    <title>IMG to Art</title>
+    <script src="js/lib/stackblur.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/var.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/file.js"></script>
+    <script type="text/javascript" src="js/selArea.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/body.css">
+    <link rel="stylesheet" type="text/css" href="css/div.css">
+    <link rel="stylesheet" type="text/css" href="css/slider.css">
+    <link rel="stylesheet" type="text/css" href="css/button.css">
+    <link rel="stylesheet" type="text/css" href="css/sel_area.css">
+</head>
+
+<body>
+    <br><br>
+    <br><br>
+    <div id='page1' style='height: 100vh;'>
+        <h2 style='font-size: 4em;'>1. upload an image file</h2>
+        <span style='display: inline-block; width: 250px; text-align: left;'>
+            <input type="file" id="input_file" multiple="false" onchange="handleFiles(this.files)">
+        </span>
         <br><br>
-        <div id="page">
-            <div class="button active" onclick="chgPage(1)"></div>
-            <div class="button" onclick="chgPage(2)" id='step2btn'></div>
-        </div>
+        <span style='display: inline-block; width: 250px; text-align: left;'>
+        <input type="url" placeholder="url" id="input_file_url">
+            <input type="submit" onclick=handleUrl()>
+        </span>
         <br><br>
-        <div id='page1' style='height: 100%;'>
-            <h2 style='font-size: 4em; text-align: center;'>1. upload an image file</h2>
-            <div style='text-align: center;'>
-                <input type="file" id="input_file" multiple="false" onchange="handleFiles(this.files)">
-                <br><br>
-                <input type="url" placeholder="url" id="input_file_url">
-                <input type="submit" onclick=handleUrl()>
+        <span style='display: inline-block; width: 250px; text-align: left;'>
+            <button onclick="useEample()">use exapmle image</button>
+        </span>
+    </div>
+    </div>
+    <div id='page2' style='height: 100vh;'>
+        <br><br><br><br><br><br><br><br>
+        <h2 style='font-size: 4em;'>2. clip image you like</h2>
+        <div class="slidecontainer" style='font-size: 2em;'>
+            <div style='font-size: 2em;'>
+                <span>image scale:&nbsp;</span>
+                <span id="slider_img_text"> 1&nbsp;</span>
+                <input type="range" min="1" max="3" value="1" class="slider" id="slider_img" style=' width: 40vw;
+                text-align: center;' oninput="alert('upload an image')">
             </div>
-        </div>
-        <div id='page2'>
-            <h2 style='font-size: 4em; text-align: center;'>2. clip image you like</h2>
-            <div class="slidecontainer" style='font-size: 2em;'>
-                <!--
-            <p id="slider_v1_text">x-ratio: 1</p>
-            <input type="range" min="1" max="10" value="1" step="1" class="slider" id="slider_v1"
-                oninput="app.elem.chgPText(1)">
-            <p id="slider_v2_text">y-ratio: 2</p>
-            <input type="range" min="1" max="10" value="2" step="1" class="slider" id="slider_v2"
-                oninput="app.elem.chgPText(2)">
-            -->
-                <p id="slider_v3_text">min value: 78</p>
-                <input type="range" min="0" max="255" value="78" class="slider" id="slider_v3"
-                    oninput="app.elem.chgPText(3)">
-                <p id="slider_v4_text">max value: 125</p>
-                <input type="range" min="0" max="255" value="125" class="slider" id="slider_v4"
-                    oninput="app.elem.chgPText(4)">
-                <p id="slider_v5_text">image scale: 1</p>
-                <input type="range" min="1" max="5" value="1" class="slider" id="slider_v5"
-                    oninput="app.elem.chgPText(5)">
-                <br><br>
-                <div style='text-align: center;'>
-                    <button class="button2" id="change_btn" onclick="app.restart()">change</button>
-                    <button class="button2" id="resst_btn" onclick="app.reset()">reset</button>
-                </div>
-            </div>
-            <br>
-            <canvas id='cns1'></canvas>
+
             <br><br>
-            <canvas id='cns2'></canvas>
-            <canvas id='cns3' style='display: none;'></canvas>
-            <div id='div_art'></div>
-            <div id="sel_area" hidden></div>
         </div>
-    </body>
+        <br>
+        <canvas id='cns1'></canvas>
+        <br><br>
+        <canvas id='cns2'></canvas>
+        <canvas id='cns3' style='display: none;'></canvas>
+        <br><br>
+        <div id='div_art'></div>
+        <div id="sel_area" hidden></div>
+    </div>
+</body>
 
-    </htmlstyle="height: 100%;">
+</html>
