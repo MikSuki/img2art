@@ -1,7 +1,7 @@
 const DEFAULT_VALUE =
 {
-    'x_ratio': 1,
-    'y_ratio': 2,
+    'x_ratio': 2,
+    'y_ratio': 4,
     'min_val': 75,
     'max_val': 130,
     'gamma': 0.5,

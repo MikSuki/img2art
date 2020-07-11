@@ -20,6 +20,10 @@ function handleUrl() {
     }
 }
 
-function useEample() {
-    img.src = 'example.jpg';
+function useEample1() {
+    img.src = 'example1.jpg';
+}
+
+function useEample2() {
+    img.src = 'example2.png';
 }

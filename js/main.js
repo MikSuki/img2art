@@ -141,6 +141,7 @@ class App {
 
     restart() {
         document.getElementById(ID.sel).hidden = true;
+        document.getElementById(ID.div_art).innerHTML = '';
         this.elem.chgImgSize();
         this.config.set();
         setTimeout(() => {
