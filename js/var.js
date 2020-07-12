@@ -11,6 +11,8 @@ const DEFAULT_VALUE =
 const ID = {
     slider: 'slider_img',
     slider_text: 'slider_img_text',
+    xy_slider: 'slider_xy',
+    xy_slider_text: 'slider_xy_text',
     sel: 'sel_area',
     div_art: 'div_art',
     step1: 'step1btn',

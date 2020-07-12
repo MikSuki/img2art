@@ -93,6 +93,11 @@ class Elem {
         document.getElementById(ID.slider_text).innerHTML = v + '&nbsp;';
     }
 
+    chgXYSize() {
+        let v = document.getElementById(ID.xy_slider).value;
+        document.getElementById(ID.xy_slider_text).innerHTML = v + '&nbsp;';
+    }
+
     // set at app construct
     callConfig() { }
 }
@@ -102,6 +107,8 @@ class Config {
 
     set() {
         this.img_scale = document.getElementById(ID.slider).value;
+        this.x_ratio = document.getElementById(ID.xy_slider).value * 1
+        this.y_ratio = document.getElementById(ID.xy_slider).value * 2
     }
 
     reset() {
@@ -143,6 +150,7 @@ class App {
         document.getElementById(ID.sel).hidden = true;
         document.getElementById(ID.div_art).innerHTML = '';
         this.elem.chgImgSize();
+        this.elem.chgXYSize();
         this.config.set();
         setTimeout(() => {
             this.start();
@@ -154,6 +162,8 @@ class App {
             h = this.elem.getCnsHeight(2),
             imgData1, imgData2;
 
+        console.log(w, h)
+        console.log('-------')
         imgData1 = this.elem.getCtx(2).getImageData(0, 0, w, h);
         imgData2 = this.elem.getCtx(2).getImageData(0, 0, w, h);
         this.elem.rendImg(3, this.elem.getCns(2), w, h, true);
@@ -253,6 +263,7 @@ window.onload = () => {
         if (is_first) {
             app = new App();
             document.getElementById(ID.slider).oninput = () => { app.restart() };
+            document.getElementById(ID.xy_slider).oninput = () => { app.restart() };
             setSelArea();
             is_first = false;
         }
