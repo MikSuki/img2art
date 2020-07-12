@@ -25,15 +25,15 @@ function setSelArea() {
     }
     else {
         onmousedown = function (e) {
-            e.preventDefault();
+            // e.preventDefault();
             onCursorDown(e.clientX, e.clientY)
         }
         onmousemove = function (e) {
-            e.preventDefault();
+            // e.preventDefault();
             onCursorMove(e.clientX, e.clientY)
         };
         onmouseup = function (e) {
-            e.preventDefault();
+            // e.preventDefault();
             onCursorUp()
         }
     }
@@ -49,7 +49,6 @@ function setSelArea() {
         div.style.height = y4 - y3 + 'px';
     }
     function onCursorDown(x, y) {
-        console.log('click')
         var rect = app.elem.cns[0].getBoundingClientRect();
         x1 = x
         y1 = y
@@ -60,7 +59,6 @@ function setSelArea() {
         is_click = true
     };
     function onCursorMove(x, y) {
-        console.log('move')
         if (!is_click) return
         div.hidden = 0;
         x2 = x + window.scrollX;
@@ -68,7 +66,6 @@ function setSelArea() {
         reCalc();
     };
     function onCursorUp() {
-        console.log('up')
         if (!is_click) return
         is_click = false
         var rect = app.elem.cns[0].getBoundingClientRect();
@@ -76,9 +73,13 @@ function setSelArea() {
         var x4 = Math.max(x1, x2) - rect.left - window.scrollX;
         var y3 = Math.min(y1, y2) - rect.top - window.scrollY;
         var y4 = Math.max(y1, y2) - rect.top - window.scrollY;
+        if ((x4 - x3) % DEFAULT_VALUE.x_ratio != 0) x4 -= (x4 - x3) % DEFAULT_VALUE.x_ratio
+        if ((y4 - y3) % DEFAULT_VALUE.y_ratio != 0) y4 -= (y4 - y3) % DEFAULT_VALUE.y_ratio
+
 
         app.elem.setCns(2, x4 - x3, y4 - y3)
         app.elem.ctx[1].clearRect(0, 0, app.elem.getCnsWidth(2), app.elem.getCnsHeight(2))
+
         app.elem.ctx[1].drawImage(app.elem.cns[0], x3, y3, x4 - x3, y4 - y3, 0, 0, x4 - x3, y4 - y3)
         app.edgeDetect()
     };
