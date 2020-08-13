@@ -6,6 +6,6 @@ body {
     -moz-user-select: none;/* Firefox all */
     -ms-user-select: none;/* IE 10+ */
     user-select: none;/* Likely future */
-    background-color: rgb(231, 231, 231);
+    /* background-color: rgb(231, 231, 231); */
     text-align: center;
 }
