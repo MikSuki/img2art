@@ -225,34 +225,31 @@ class App {
     }
 
     chgPage(i) {
-        let top = 0;
+        let top;
         switch (i) {
             case 0:
-                window.scroll({
-                    top: top,
-                    left: 0,
-                    behavior: 'smooth'
-                });
+                top = 0;
                 break
             case 1:
                 top = window.scrollY +
-                    document.getElementById(ID.page2).getBoundingClientRect().y;
-                window.scroll({
-                    top: top,
-                    left: 0,
-                    behavior: 'smooth'
-                });
+                    document.getElementById(ID.page2).getBoundingClientRect().top;
                 break
             case 2:
                 top = window.scrollY +
-                    app.elem.cns[1].getBoundingClientRect().y +
+                    app.elem.cns[1].getBoundingClientRect().top +
                     app.elem.cns[1].getBoundingClientRect().height;
-                window.scroll({
-                    top: top,
-                    left: 0,
-                    behavior: 'smooth'
-                });
                 break
+        }
+        // check does browser support scrollOption
+        if ('scrollBehavior' in document.documentElement.style) {
+            window.scrollTo({
+                top: top,
+                left: 0,
+                behavior: 'smooth'
+            });
+        }
+        else {
+            window.scrollTo(0, top);
         }
     }
 }
